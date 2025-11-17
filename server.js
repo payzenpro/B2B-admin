@@ -16,6 +16,8 @@ import categoriesRoutes from './routes/categories.js';
 import attributesRoutes from './routes/attributes.js';
 import storesRoutes from './routes/stores.js'; 
 import flashsalesRoutes from './routes/flashsales.js';
+import pushNotificationRoutes from './routes/pushNotificationRoutes.js';
+import cartRoutes from './routes/cart.js';
 
 
 
@@ -38,14 +40,20 @@ app.use('/api/auth', authRoutes);
 app.use('/api/refunds', refundRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/banners', bannerRoutes);
-app.use('/api/order', orderRoutes);
+
 app.use('/api/product', productRoutes); 
 app.use('/api/customers', customerRoutes); 
 app.use('/api/vendor', vendorRoutes); 
 app.use('/api/categories', categoriesRoutes);
 app.use('/api/attributes', attributesRoutes);
 app.use('/api/stores', storesRoutes);
-app.use('/api/flashsales', flashsalesRoutes);
+app.use('/api', flashsalesRoutes);
+// app.use('/api/flashsales', flashsalesRoutes);
+app.use('/api/pushNotification', pushNotificationRoutes);
+app.use('/api', cartRoutes);
+app.use('/api', orderRoutes);
+
+
 
 
 
