@@ -18,16 +18,13 @@ router.get('/customers', verifyToken, getAllCustomers);
 router.get('/customers/:id', verifyToken, getCustomerById);
 router.post('/customers', verifyToken, createCustomer);
 
-// ✅ Update customer
+//  Update customer
 router.put('/customers/:id', verifyToken, updateCustomer);
 
-// ✅ Delete customer
+// Delete customer
 router.delete('/customers/:id', verifyToken, deleteCustomer);
 
 
-
-
-// ✅ Get all refunds for logged-in customer or all (if admin)
 router.get('/refunds', verifyToken, getAllRefunds);
 
 export default router;

@@ -87,7 +87,7 @@ router.get('/stores', verifyToken, authorize('superadmin', 'vendor'), async (req
     if (req.user.role === 'superadmin') {
       stores = await Store.find();
     } else if (req.user.role === 'vendor') {
-      stores = await Store.find({ vendor: req.user.userId });  // ⬅ correct field
+      stores = await Store.find({ vendor: req.user.userId });  
     } else {
       return res.status(403).json({ success: false, message: 'Access denied' });
     }

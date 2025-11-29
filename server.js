@@ -18,8 +18,8 @@ import storesRoutes from './routes/stores.js';
 import flashsalesRoutes from './routes/flashsales.js';
 import pushNotificationRoutes from './routes/pushNotificationRoutes.js';
 import cartRoutes from './routes/cart.js';
-
-
+ //import profileRoutes from './routes/profile.js';
+ import profileRoutes from './routes/profile.js';
 
 
 dotenv.config();
@@ -48,10 +48,13 @@ app.use('/api/categories', categoriesRoutes);
 app.use('/api/attributes', attributesRoutes);
 app.use('/api/stores', storesRoutes);
 app.use('/api', flashsalesRoutes);
+
 // app.use('/api/flashsales', flashsalesRoutes);
 app.use('/api/pushNotification', pushNotificationRoutes);
 app.use('/api', cartRoutes);
 app.use('/api', orderRoutes);
+app.use('/api', profileRoutes);
+// app.use('/api', profileRoutes);
 
 
 

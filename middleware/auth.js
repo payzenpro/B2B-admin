@@ -43,6 +43,8 @@
 
 
 // middleware/auth.js
+
+
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET as CFG_SECRET } from '../config/config.js';
 const JWT_SECRET = CFG_SECRET || process.env.JWT_SECRET;
@@ -83,6 +85,7 @@ export const verifyToken = (req, res, next) => {
     }
 
     // 2) Verify token
+    
     let decoded;
     try {
       decoded = jwt.verify(token, JWT_SECRET);
@@ -95,12 +98,10 @@ export const verifyToken = (req, res, next) => {
     const role = decoded.role || decoded.userRole || decoded.roleName;
 
     if (!userId) {
-      // token doesn't contain user id
       console.error('JWT token missing user identifier (id/userId/_id)');
       return unauthorized(res, 'Invalid token payload');
     }
-
-    // attach a consistent shape
+    
     req.user = {
       userId: String(userId),
       id: String(userId),     
@@ -114,8 +115,6 @@ export const verifyToken = (req, res, next) => {
     return unauthorized(res);
   }
 };
-
-// authorize middleware: authorize('vendor'), authorize('superadmin','admin')
 export const authorize = (...allowedRoles) => (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ success: false, message: 'User not authenticated' });
@@ -126,3 +125,5 @@ export const authorize = (...allowedRoles) => (req, res, next) => {
   }
   return next();
 };
+
+export default verifyToken;
