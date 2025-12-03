@@ -34,21 +34,69 @@ export const getProductById = async (req, res) => {
 };
 
 
+// export const createProduct = async (req, res) => {
+//   try {
+//     const productData = {
+//       ...req.body,
+//       vendorId: req.user.role === 'vendor' ? req.user.userId : null,
+//     };
+
+//     const product = new Product(productData);
+//     await product.save();
+
+//     res.status(201).json({ success: true, data: product });
+//   } catch (error) {
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// };
+// controllers/productController.js
+import Product from "../models/Product.js";
+
 export const createProduct = async (req, res) => {
   try {
-    const productData = {
-      ...req.body,
-      vendorId: req.user.role === 'vendor' ? req.user.userId : null,
-    };
+    console.log("body ==>", req.body);      // 🟡 Debug
+    console.log("files ==>", req.files);    // 🟡 Debug (agar upload use kar rahe ho)
 
-    const product = new Product(productData);
+    const {
+      name,
+      category,
+      price,
+      stock,
+      status,
+      vendor,
+      images,
+      sizes,
+      colors,
+    } = req.body;
+
+    const product = new Product({
+      name,
+      category,
+      price,
+      stock,
+      status,
+      vendor,
+      images, 
+      sizes,
+      colors,
+    });
+
     await product.save();
 
-    res.status(201).json({ success: true, data: product });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    return res.status(201).json({
+      success: true,
+      message: "Product created",
+      data: product,
+    });
+  } catch (err) {
+    console.error("Create product error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
+
 
 export const updateProduct = async (req, res) => {
   try {

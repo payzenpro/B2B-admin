@@ -14,12 +14,13 @@ import customerRoutes from './routes/customers.js';
 import vendorRoutes from './routes/vendor.js'; 
 import categoriesRoutes from './routes/categories.js'; 
 import attributesRoutes from './routes/attributes.js';
-import storesRoutes from './routes/stores.js'; 
+import storeRoutes from './routes/stores.js'; 
 import flashsalesRoutes from './routes/flashsales.js';
 import pushNotificationRoutes from './routes/pushNotificationRoutes.js';
 import cartRoutes from './routes/cart.js';
  //import profileRoutes from './routes/profile.js';
  import profileRoutes from './routes/profile.js';
+ import shopRoutes from "./routes/shop.js";
 
 
 dotenv.config();
@@ -46,7 +47,7 @@ app.use('/api/customers', customerRoutes);
 app.use('/api/vendor', vendorRoutes); 
 app.use('/api/categories', categoriesRoutes);
 app.use('/api/attributes', attributesRoutes);
-app.use('/api/stores', storesRoutes);
+app.use('/api/stores', storeRoutes);
 app.use('/api', flashsalesRoutes);
 
 // app.use('/api/flashsales', flashsalesRoutes);
@@ -55,6 +56,7 @@ app.use('/api', cartRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', profileRoutes);
 // app.use('/api', profileRoutes);
+app.use('/api/vendor', shopRoutes);
 
 
 

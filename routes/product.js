@@ -115,4 +115,28 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+
+
+// GET /api/product/public - Public products fetch
+router.get('/public', async (req, res) => {
+  try {
+    const products = await Product.find({ status: 'active' })
+      .select('-password') // Sensitive fields exclude
+      .limit(20)
+      .sort({ createdAt: -1 });
+    
+    res.json({
+      success: true,
+      data: products,
+      count: products.length
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
+
 export default router;

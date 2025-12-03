@@ -11,7 +11,7 @@
 
 
 import express from 'express';
-import verifyToken from '../middleware/auth.js'; // ✅ Default import
+import verifyToken from '../middleware/auth.js';
 import { getProfile } from '../controllers/profileController.js';
 
 const router = express.Router();
