@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema({
   role: { type: String, default: 'customer' },
 }, { timestamps: true });
 
-// Yeh line fix hai:
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default User;

@@ -14,21 +14,21 @@ import customerRoutes from './routes/customers.js';
 import vendorRoutes from './routes/vendor.js'; 
 import categoriesRoutes from './routes/categories.js'; 
 import attributesRoutes from './routes/attributes.js';
-import storeRoutes from './routes/stores.js'; 
-import flashsalesRoutes from './routes/flashsales.js';
+import storeRoutes from './routes/stores.js';
 import pushNotificationRoutes from './routes/pushNotificationRoutes.js';
 import cartRoutes from './routes/cart.js';
- //import profileRoutes from './routes/profile.js';
  import profileRoutes from './routes/profile.js';
  import shopRoutes from "./routes/shop.js";
+  import reviewRoutes from "./routes/review.js";
+   import chatRoutes from "./routes/chat.js";
+   import uploadRoutes from './routes/uploadRoutes.js';
+    import AddressRoutes from './routes/address.js'; 
 
 
 dotenv.config();
 
 const app = express();
-
-app.use(express.json());
-app.use(cors());
+app.use = cors;
 
 
 const MONGO_URI = 'mongodb://localhost:27017/ecommerce-admin';
@@ -42,23 +42,24 @@ app.use('/api/refunds', refundRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/banners', bannerRoutes);
 
-app.use('/api/product', productRoutes); 
+app.use('/api', productRoutes); 
 app.use('/api/customers', customerRoutes); 
 app.use('/api/vendor', vendorRoutes); 
 app.use('/api/categories', categoriesRoutes);
 app.use('/api/attributes', attributesRoutes);
 app.use('/api/stores', storeRoutes);
-app.use('/api', flashsalesRoutes);
 
-// app.use('/api/flashsales', flashsalesRoutes);
-app.use('/api/pushNotification', pushNotificationRoutes);
+
+app.use('/api/pushNotifications', pushNotificationRoutes);
 app.use('/api', cartRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', profileRoutes);
-// app.use('/api', profileRoutes);
+app.use('/api/review', reviewRoutes);
+app.use('/api/chat', chatRoutes);
+
 app.use('/api/vendor', shopRoutes);
-
-
+app.use('/api/upload', uploadRoutes);
+app.use('/api/address', AddressRoutes);
 
 
 

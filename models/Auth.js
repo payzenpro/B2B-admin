@@ -45,10 +45,8 @@ UserSchema.pre('save', function(next) {
   } else if (this.role === 'customer') {
     this.permissions = {
       canViewUsers: false,
-      // canCreateProduct: false,
       canViewOrders: true,
-      // canManageVendors: false,
-      // canViewAnalytics: false
+  
     };
   }
   next();

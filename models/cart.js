@@ -31,7 +31,7 @@ const cartSchema = new mongoose.Schema({
 // Calculate totals before saving
 cartSchema.pre('save', function(next) {
   this.subtotal = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  this.tax = Math.round(this.subtotal * 0.05); // 5% tax
+  this.tax = Math.round(this.subtotal * 0.05); 
   this.shipping = this.subtotal > 50000 ? 0 : 99;
   this.total = this.subtotal + this.tax + this.shipping;
   next();

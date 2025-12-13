@@ -1,6 +1,6 @@
 import Categories from '../models/categories.js';
 
-// Get all categories
+
 export const getAllCategories = async (req, res) => {
   try {
     const categories = await Categories.find();
@@ -10,7 +10,7 @@ export const getAllCategories = async (req, res) => {
   }
 };
 
-// Get category by id
+
 export const getCategoriesById = async (req, res) => {
   try {
     const category = await Categories.findById(req.params.id);
@@ -23,7 +23,7 @@ export const getCategoriesById = async (req, res) => {
   }
 };
 
-// Create new category
+
 export const createCategories = async (req, res) => {
   try {
     const category = new Categories(req.body);
@@ -34,7 +34,7 @@ export const createCategories = async (req, res) => {
   }
 };
 
-// Update category by id
+
 export const updateCategories = async (req, res) => {
   try {
     const category = await Categories.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -47,7 +47,7 @@ export const updateCategories = async (req, res) => {
   }
 };
 
-// Delete category by id
+
 export const deleteCategories = async (req, res) => {
   try {
     const category = await Categories.findByIdAndDelete(req.params.id);
@@ -61,3 +61,41 @@ export const deleteCategories = async (req, res) => {
 };
 
 
+
+
+  
+
+// export const getPublicProducts = async (req, res) => {
+//   try {
+//     const { category } = req.query;
+
+    
+//     const filter = { 
+//       isActive: true, 
+//       status: "active" 
+//     };
+
+  
+//     if (category && category.trim() !== '') {
+//       filter.category = { 
+//         $regex: new RegExp(category.trim(), 'i')  
+//       };
+//     }
+
+//     console.log(' Filter:', filter);
+
+//     const products = await Product.find(filter).populate('vendor', 'name email');
+
+//     res.json({ 
+//       success: true, 
+//       data: products,
+//       count: products.length 
+//     });
+//   } catch (err) {
+//     console.error(" getPublicProducts error:", err);
+//     res.status(500).json({ 
+//       success: false, 
+//       message: "Failed to fetch products" 
+//     });
+//   }
+// };

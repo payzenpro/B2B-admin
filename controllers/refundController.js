@@ -1,6 +1,5 @@
 import Refund from '../models/Refund.js';
 
-// Get all refunds
 export const getAllRefunds = async (req, res) => {
   try {
     let filter = {};
@@ -25,7 +24,6 @@ export const getAllRefunds = async (req, res) => {
   }
 };
 
-// Get single refund
 export const getRefundById = async (req, res) => {
   try {
     const refund = await Refund.findById(req.params.id)
@@ -41,7 +39,6 @@ export const getRefundById = async (req, res) => {
   }
 };
 
-// Create refund
 export const createRefund = async (req, res) => {
   try {
     const refundData = {
@@ -65,7 +62,6 @@ export const createRefund = async (req, res) => {
   }
 };
 
-// Update refund
 export const updateRefund = async (req, res) => {
   try {
     const refund = await Refund.findById(req.params.id);
@@ -94,7 +90,6 @@ export const updateRefund = async (req, res) => {
   }
 };
 
-// Approve refund
 export const approveRefund = async (req, res) => {
   try {
     if (req.user.role !== 'superadmin' && req.user.role !== 'vendor') {
@@ -125,7 +120,6 @@ export const approveRefund = async (req, res) => {
   }
 };
 
-// Reject refund
 export const rejectRefund = async (req, res) => {
   try {
     if (req.user.role !== 'superadmin' && req.user.role !== 'vendor') {
@@ -157,7 +151,6 @@ export const rejectRefund = async (req, res) => {
   }
 };
 
-// Delete refund
 export const deleteRefund = async (req, res) => {
   try {
     if (req.user.role !== 'superadmin') {
@@ -174,7 +167,7 @@ export const deleteRefund = async (req, res) => {
   }
 };
 
-// Get my refunds (for customers)
+
 export const getMyRefunds = async (req, res) => {
   try {
     const refunds = await Refund.find({ customerId: req.user.userId })

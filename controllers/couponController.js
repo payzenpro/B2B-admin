@@ -1,7 +1,7 @@
 
 import Coupon from '../models/Coupon.js';
 
-// Get all coupons (role-based)
+
 export const getAllCoupons = async (req, res) => {
   try {
     let filter = {};
@@ -27,7 +27,6 @@ export const getAllCoupons = async (req, res) => {
   }
 };
 
-// Get single coupon
 export const getCouponById = async (req, res) => {
   try {
     const coupon = await Coupon.findById(req.params.id);
@@ -41,8 +40,6 @@ export const getCouponById = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
-// Create coupon
 export const createCoupon = async (req, res) => {
   try {
     const couponData = {
@@ -63,7 +60,7 @@ export const createCoupon = async (req, res) => {
   }
 };
 
-// Update coupon
+
 export const updateCoupon = async (req, res) => {
   try {
     const coupon = await Coupon.findById(req.params.id);
@@ -92,7 +89,6 @@ export const updateCoupon = async (req, res) => {
   }
 };
 
-// Delete coupon
 export const deleteCoupon = async (req, res) => {
   try {
     const coupon = await Coupon.findById(req.params.id);
@@ -113,7 +109,7 @@ export const deleteCoupon = async (req, res) => {
   }
 };
 
-// Verify coupon
+
 export const verifyCoupon = async (req, res) => {
   try {
     const { code } = req.body;
@@ -147,7 +143,6 @@ export const verifyCoupon = async (req, res) => {
   }
 };
 
-// Apply coupon
 export const applyCoupon = async (req, res) => {
   try {
     const { code, orderAmount } = req.body;
@@ -196,7 +191,7 @@ export const applyCoupon = async (req, res) => {
   }
 };
 
-// Get active coupons
+
 export const getActiveCoupons = async (req, res) => {
   try {
     const coupons = await Coupon.find({
@@ -214,7 +209,6 @@ export const getActiveCoupons = async (req, res) => {
   }
 };
 
-// Get coupon stats
 export const getCouponStats = async (req, res) => {
   try {
     const totalCoupons = await Coupon.countDocuments();

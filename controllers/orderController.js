@@ -1,85 +1,36 @@
 import Order from '../models/Order.js';
-
-// export const createOrder = async (req, res) => {
-//   try {
-//     const {customerId,vendorId,items,totalAmount,status,shippingAddress,paymentMethod,paymentStatus,customerNote,} = req.body;
-
-//     const order = await Order.create({
-//       customerId,vendorId,items,totalAmount,status: status || 'unassigned',
-//        shippingAddress,
-//       paymentMethod: paymentMethod || 'COD',
-//       paymentStatus: paymentStatus || 'pending',
-//       customerNote,
-//     });
-
-//     return res.status(201).json({ success: true, data: order });
-//   } catch (err) {
-//     console.error('Create order error:', err);
-//     return res.status(400).json({ success: false, error: err.message });
-//   }
-// };
-
-
+import Product from '../models/Product.js'; 
 export const createOrder = async (req, res) => {
   try {
-    const user = req.user;
-
-    if (!user || user.role !== 'customer') {
-      return res.status(403).json({ success: false, message: 'Only customers can place orders' });
-    }
-
+    const customerId = req.user._id || req.user.userId; 
     const {
       items,
       totalAmount,
       paymentMethod,
       paymentStatus,
       status,
-      shippingAddress,
-      customerNote,
-      vendorId,
+      vendorId
     } = req.body;
 
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ success: false, message: 'Items are required' });
-    }
-
-    const customerId = user.userId || user._id || user.id;
-
-    
-    const finalVendorId =
-      vendorId ||
-      items[0]?.vendorId || // agar tumne items me vendorId bheja ho
-      null;
-
-    if (!finalVendorId) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'vendorId is required for order' });
-    }
-
     const order = await Order.create({
-      customerId,
-      vendorId: finalVendorId,          // ❗ yaha ab null nahi jayega
-      items: items.map((it) => ({
-        product: it.productId,
-        name: it.name,
-        price: it.price,
-        quantity: it.quantity,
-        size: it.size,
-        color: it.color,
-      })),
+      customerId,     
+      vendorId,
+      items,
       totalAmount,
-      paymentMethod: paymentMethod || 'COD',
-      paymentStatus: paymentStatus || 'pending',
-      status: status || 'unassigned',
-      shippingAddress,
-      customerNote,
+      paymentMethod: paymentMethod || "COD",
+      paymentStatus: paymentStatus || "pending",
+      status: status || "pending",
+      vendorId: vendorId || null,
     });
 
-    return res.status(201).json({ success: true, data: order });
+    return res
+      .status(201)
+      .json({ success: true, message: "Order created", data: order });
   } catch (err) {
-    console.error('Create order error:', err);
-    return res.status(500).json({ success: false, message: err.message });
+    console.error("createOrder error:", err);
+    return res
+      .status(500)
+      .json({ success: false, message: "Failed to create order" });
   }
 };
 
@@ -252,26 +203,20 @@ export const getMyOrders = async (req, res) => {
 //add /
 export const getCustomerOrders = async (req, res) => {
   try {
-    const user = req.user;
-
-    console.log('getCustomerOrders user:', user);  // 👈 1) log
-
-    if (!user || user.role !== 'customer') {
-      return res.status(403).json({ success: false, message: 'Access denied' });
-    }
-
-    const customerId = user.userId || user._id || user.id;
-    console.log('customerId used for query:', customerId); // 👈 2) log
+    const customerId = req.user._id || req.user.userId;
+    console.log("customerId used for query:", customerId);
 
     const orders = await Order.find({ customerId })
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .populate("items.productId", "name image price");
 
-    console.log('Found orders count:', orders.length); // 👈 3) log
+    console.log("Found orders count:", orders.length);
 
     return res.json({ success: true, data: orders });
   } catch (err) {
-    console.error('Get customer orders error:', err);
-    return res.status(500).json({ success: false, message: err.message });
+    console.error("getCustomerOrders error:", err);
+    return res
+      .status(500)
+      .json({ success: false, message: "Failed to fetch orders" });
   }
 };
-

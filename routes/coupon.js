@@ -13,15 +13,10 @@ import {
 import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
-
-//  PUBLIC ROUTES 
 router.get('/active', getActiveCoupons);
-
-//PROTECTED ROUTES (Customer) 
 router.post('/verify', verifyToken, verifyCoupon);
 router.post('/apply', verifyToken, applyCoupon);
-
-//  PROTECTED ROUTES (Admin) 
+ 
 router.get('/', verifyToken, getAllCoupons);
 router.get('/stats', verifyToken, getCouponStats);
 router.get('/:id', verifyToken, getCouponById);

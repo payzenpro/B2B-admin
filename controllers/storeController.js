@@ -1,6 +1,5 @@
 import Store from '../models/stores.js';
 
-// Get all stores
 export const getAllStores = async (req, res) => {
   try {
     const stores = await Store.find().populate('ownerId', 'name email');
@@ -10,7 +9,7 @@ export const getAllStores = async (req, res) => {
   }
 };
 
-// Get single store by ID
+
 export const getStoreById = async (req, res) => {
   try {
     const store = await Store.findById(req.params.id).populate('ownerId', 'name email');
@@ -22,7 +21,6 @@ export const getStoreById = async (req, res) => {
   }
 };
 
-// Create new store
 export const createStore = async (req, res) => {
   try {
     const store = new Store(req.body);
@@ -33,7 +31,7 @@ export const createStore = async (req, res) => {
   }
 };
 
-// Update store by ID
+
 export const updateStore = async (req, res) => {
   try {
     const store = await Store.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -45,7 +43,7 @@ export const updateStore = async (req, res) => {
   }
 };
 
-// Delete store by ID
+
 export const deleteStore = async (req, res) => {
   try {
     const store = await Store.findByIdAndDelete(req.params.id);

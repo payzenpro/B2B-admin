@@ -1,142 +1,145 @@
+// import express from "express";
+// import {
+//   getPublicProducts,
+//   getProductById,
+//   createProduct,
+//   updateProduct,
+//   deleteProduct,
+//    getProduct,
+//     getVendorProducts,
+// } from "../controllers/productController.js";
+
+// const router = express.Router();
+
+   
+// router.get("/product", getPublicProducts);  
+         
+// router.get("/product/:id", getProductById);
+
+// router.get("/vendor", getVendorProducts); 
+
+// router.post("/product", createProduct);
+
+// router.put("/product/:id", updateProduct);
+// router.delete("/product/:id", deleteProduct);
+
+// export default router;
+
+// // import express from "express";
+// // import {
+// //   getPublicProducts,
+// //   getProductById,
+// //   createProduct,
+// //   updateProduct,
+// //   deleteProduct,
+// //   getProduct,
+// //   getVendorProducts,
+// // } from "../controllers/productController.js";
+// // import { verifyToken, authorize } from "../middleware/auth.js";
+
+// // const router = express.Router();
+
+// // // PUBLIC
+// // router.get("/product/public", getPublicProducts);
+
+// // // VENDOR PRODUCTS
+// // router.get(
+// //   "/vendor",
+// //   verifyToken,
+// //   authorize("vendor"),
+// //   getVendorProducts
+// // );
+
+// // // ADMIN/VENDOR all products (optional)
+// // router.get(
+// //   "/product",
+// //   verifyToken,
+// //   authorize("superadmin", "vendor"),
+// //   getProduct
+// // );
+
+// // router.get("/product/:id", getProductById);
+
+// // router.post(
+// //   "/product",
+// //   verifyToken,
+// //   authorize("superadmin", "vendor"),
+// //   createProduct
+// // );
+
+// // router.put(
+// //   "/product/:id",
+// //   verifyToken,
+// //   authorize("superadmin", "vendor"),
+// //   updateProduct
+// // );
+
+// // router.delete(
+// //   "/product/:id",
+// //   verifyToken,
+// //   authorize("superadmin"),
+// //   deleteProduct
+// // );
+
+// // export default router;
+
 import express from "express";
-import Product from "../models/Product.js";
+import {
+  getPublicProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getProduct,
+  getVendorProducts,
+} from "../controllers/productController.js";
+import { verifyToken, authorize } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  try {
-    const products = await Product.find().sort({ createdAt: -1 });
-    return res.json({
-      success: true,
-      data: products,
-    });
-  } catch (err) {
-    console.error("Error fetching products:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to fetch products",
-    });
-  }
-});
+router.get("/product/public", getPublicProducts); 
 
 
-router.post("/", async (req, res) => {
-  try {
+router.get(
+  "/vendor",
+  verifyToken,
+  authorize("vendor"),
+  getVendorProducts
+);
+// router.get("/vendor", getVendorProducts); 
 
-    console.log("Create product body:", req.body);
-    const { name, category, price, stock, status, image } = req.body;
-
-    if (!name || !category || price == null || stock == null || !status) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing required fields",
-      });
-    }
-
-    const product = new Product({
-      name,
-      category,
-      price,
-      stock,
-      status,
-      image,
-    });
-
-    const savedProduct = await product.save();
-
-    return res.status(201).json({
-      success: true,
-      message: "Product created successfully",
-      data: savedProduct,
-    });
-  } catch (err) {
-    console.error("Error creating product:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to create product",
-    });
-  }
-});
+router.get(
+  "/product",
+  verifyToken,
+  authorize("superadmin", "vendor"),
+  getProduct
+);
 
 
-router.put("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const updated = await Product.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-
-    if (!updated) {
-      return res.status(404).json({
-        success: false,
-        message: "Product not found",
-      });
-    }
-
-    return res.json({
-      success: true,
-      message: "Product updated successfully",
-      data: updated,
-    });
-  } catch (err) {
-    console.error("Error updating product:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to update product",
-    });
-  }
-});
+router.get("/product/:id", getProductById);
 
 
-router.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const deleted = await Product.findByIdAndDelete(id);
-
-    if (!deleted) {
-      return res.status(404).json({
-        success: false,
-        message: "Product not found",
-      });
-    }
-
-    return res.json({
-      success: true,
-      message: "Product deleted successfully",
-    });
-  } catch (err) {
-    console.error("Error deleting product:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to delete product",
-    });
-  }
-});
+router.post(
+  "/product",
+  verifyToken,
+  authorize("superadmin", "vendor"),
+  createProduct
+);
 
 
+router.put(
+  "/product/:id",
+  verifyToken,
+  authorize("superadmin", "vendor"),
+  updateProduct
+);
 
-// GET /api/product/public - Public products fetch
-router.get('/public', async (req, res) => {
-  try {
-    const products = await Product.find({ status: 'active' })
-      .select('-password') // Sensitive fields exclude
-      .limit(20)
-      .sort({ createdAt: -1 });
-    
-    res.json({
-      success: true,
-      data: products,
-      count: products.length
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Server error'
-    });
-  }
-});
 
+router.delete(
+  "/product/:id",
+  verifyToken,
+  authorize("superadmin"),
+  deleteProduct
+);
 
 export default router;

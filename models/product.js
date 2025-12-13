@@ -1,119 +1,101 @@
-// // import mongoose from 'mongoose';
 
-// // const productSchema = new mongoose.Schema({
-// //   name: { 
-// //     type: String, 
-// //     required: true 
-// //   },
-// //   description: String,
-// //   price: { 
-// //     type: Number, 
-// //     required: true 
-// //   },
-// //   category: String,
-// //   image: String,
-// //   stock: { 
-// //     type: Number, 
-// //     default: 0 
-// //   },
-// //   vendorId: {
-// //     type: mongoose.Schema.Types.ObjectId, 
-// //     ref: 'User'
-// //   },
-// //   isActive: { 
-// //     type: Boolean, 
-// //     default: true 
-// //   },
-// //   status: {
-// //     type: String,
-// //     enum: ['pending', 'approved', 'rejected'],
-// //     default: 'pending'
-// //   }
-// // }, { 
-// //   timestamps: true 
-// // });
-
-// // export default mongoose.model('Product', productSchema);
-
-
-// // backend/models/Product.js
-
-// import mongoose from "mongoose";
-
-// const productSchema = new mongoose.Schema(
-//   {
-//     name: {
-//       type: String,
-//       required: true,
-//       trim: true,
-//     },
-//     category: {
-//       type: String,
-//       required: true,
-//     },
-//     price: {
-//       type: Number,
-//       required: true,
-//       min: 0,
-//     },
-//     stock: {
-//       type: Number,
-//       required: true,
-//       min: 0,
-//     },
-//     status: {
-//       type: String,
-//       enum: ["active", "inactive"],
-//       default: "active",
-//     },
-//     image: {
-//       type: String, 
-//     },
-//   },
-//   { timestamps: true }
-// );
-
-// const Product = mongoose.model("Product", productSchema);
-// export default Product;
-
-// backend/models/Product.js
 import mongoose from "mongoose";
+
+const priceSchema = new mongoose.Schema(
+  {
+    mrp: { type: Number, required: true },        
+    sellingPrice: { type: Number, required: true },
+    discountPercent: { type: Number },          
+  },
+  { _id: false }
+);
+
+const sizeOptionSchema = new mongoose.Schema(
+  {
+    label: String,         
+    chest: String,        
+    length: String,        
+    stock: Number,       
+  },
+  { _id: false }
+);
+
+const offerSchema = new mongoose.Schema(
+  {
+    title: String,         
+    description: String,  
+    type: String,         
+  },
+  { _id: false }
+);
+
+const policySchema = new mongoose.Schema(
+  {
+    returnDays: Number,    
+    returnPolicyText: String, 
+    warrantyText: String,     
+  },
+  { _id: false }
+);
+
+const specSchema = new mongoose.Schema(
+  {
+    key: String,          
+    value: String,        
+  },
+  { _id: false }
+);
 
 const productSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-    stock: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-    status: {
-      type: String,
-      enum: ["active", "inactive"],
-      default: "active",
-    },
-    image: {
-      type: String,
-    },
+    name: { type: String, required: true ,lowercase: true },        
+    slug: { type: String, unique: true },
+    // brand: { type: String, required: true },       
+    category: { type: String, required: true },   
+    subCategory: { type: String },                
+
+    description: { type: String },
+
+    images: [String],                            
+    thumbnail: String,                              
+
+    colors: [String],                             
+    sizes: [sizeOptionSchema],                      
+
+    priceInfo: priceSchema,                    
+    stock: { type: Number, default: 0 },           
+
+    rating: { type: Number, default: 0 },          
+    ratingCount: { type: Number, default: 0 },      
+    reviewCount: { type: Number, default: 0 },      
+
+    offers: [offerSchema],                          
+    policy: policySchema,                           
+
+    specifications: [specSchema],  
     
-    sizes: [String],
-    colors: [String],
+      vendorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
+    seller: {
+      // id: { type: mongoose.Schema.Types.ObjectId, ref: "Vendor" ,default: null},
+      // vendorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+      name: String,                                 
+      rating: Number,                               
+    },
+
+    services: {
+      codAvailable: { type: Boolean, default: true },
+      fastDelivery: { type: Boolean, default: false },
+    },
+
+    isActive: { type: Boolean, default: true },
+    status: { type: String, default: "active" },
   },
   { timestamps: true }
 );
 
-const Product = mongoose.model("Product", productSchema);
-export default Product;
+export default mongoose.model("Product", productSchema);

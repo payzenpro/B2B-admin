@@ -1,6 +1,5 @@
 import PushNotification from '../models/PushNotification.js';
 
-// Get all notifications
 export const getNotifications = async (req, res) => {
   try {
     const notifications = await PushNotification.find().sort({ createdAt: -1 });
@@ -10,7 +9,6 @@ export const getNotifications = async (req, res) => {
   }
 };
 
-// Create a new notification
 export const createNotification = async (req, res) => {
   try {
     const notification = new PushNotification(req.body);
@@ -21,7 +19,7 @@ export const createNotification = async (req, res) => {
   }
 };
 
-// Update a notification
+
 export const updateNotification = async (req, res) => {
   try {
     const notification = await PushNotification.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -32,7 +30,7 @@ export const updateNotification = async (req, res) => {
   }
 };
 
-// Delete a notification
+
 export const deleteNotification = async (req, res) => {
   try {
     const notification = await PushNotification.findByIdAndDelete(req.params.id);

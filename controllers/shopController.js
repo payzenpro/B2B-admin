@@ -1,19 +1,9 @@
-// controllers/vendorShopController.js
 import Shop from "../models/shop.js";
-// import slugify from "slugify"; // agar npm se install nahi kiya, to simple slug function bana sakte ho
 
-// agar slugify install nahi karna to ye simple helper use kar lo:
-// const makeSlug = (name) =>
-//   name
-//     .toString()
-//     .toLowerCase()
-//     .trim()
-//     .replace(/[^a-z0-9]+/g, "-")
-//     .replace(/(^-|-$)+/g, "");
 
 export const getMyShop = async (req, res) => {
   try {
-    const vendorId = req.user._id; // ya req.user.userId (auth middleware ke hisaab se)
+    const vendorId = req.user._id;
 
     const shop = await Shop.findOne({ vendor: vendorId });
 
@@ -30,7 +20,6 @@ export const getMyShop = async (req, res) => {
   }
 };
 
-// create / update (upsert) – vendor apni shop info save / update karega
 export const upsertMyShop = async (req, res) => {
   try {
     const vendorId = req.user._id;
@@ -53,13 +42,6 @@ export const upsertMyShop = async (req, res) => {
     }
 
     const slug = makeSlug(shopName);
-
-    // check agar koi aur shop same slug se already exist to vendor alag
-    // const existingWithSlug = await Shop.findOne({
-    //   slug,
-    //   vendor: { $ne: vendorId },
-    // });
-
     if (existingWithSlug) {
       return res.status(400).json({
         success: false,
@@ -84,7 +66,7 @@ export const upsertMyShop = async (req, res) => {
       },
       contact: {
         phone: contact.phone || "",
-        email: contact.email || req.user.email, // fallback current user email
+        email: contact.email || req.user.email, 
       },
       social: {
         website: social.website || "",
@@ -123,7 +105,6 @@ export const upsertMyShop = async (req, res) => {
   }
 };
 
-// public shop by slug (customer side me use kar sakte ho)
 export const getShopBySlug = async (req, res) => {
   try {
     const { slug } = req.params;

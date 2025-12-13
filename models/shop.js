@@ -1,4 +1,3 @@
-// models/Shop.js
 import mongoose from "mongoose";
 
 const shopSchema = new mongoose.Schema(
@@ -7,7 +6,7 @@ const shopSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true, // ek vendor ka sirf ek shop
+      unique: true, 
     },
     shopName: {
       type: String,
@@ -26,11 +25,11 @@ const shopSchema = new mongoose.Schema(
       default: "",
     },
     logo: {
-      type: String, // image URL or path
+      type: String,
       default: "",
     },
     banner: {
-      type: String, // image URL or path
+      type: String, 
       default: "",
     },
     address: {

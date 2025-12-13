@@ -1,50 +1,4 @@
 
-// import jwt from 'jsonwebtoken';
-// import { JWT_SECRET } from '../config/config.js';  // ✅ yaha se same secret import karo
-
-// export const verifyToken = (req, res, next) => {
-//   const authHeader = req.headers.authorization;
-
-//   // ✅ Header check
-//   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-//     return res.status(401).json({
-//       success: false,
-//       message: 'No token provided'
-//     });
-//   }
-
-//   const token = authHeader.split(' ')[1];
-
-//   try {
-//     // ✅ Yaha ab config ka JWT_SECRET use ho raha hai
-//     const decoded = jwt.verify(token, JWT_SECRET);
-//     req.user = decoded;
-//     next();
-//   } catch (error) {
-//     console.error('JWT verify error:', error.message);
-//     return res.status(401).json({
-//       success: false,
-//       message: 'Invalid token'
-//     });
-//   }
-// };
-
-// export const authorize = (...roles) => {
-//   return (req, res, next) => {
-//     if (!roles.includes(req.user.role)) {
-//       return res.status(403).json({
-//         success: false,
-//         message: 'Access denied. Required role: ' + roles.join(', ')
-//       });
-//     }
-//     next();
-//   };
-// };
-
-
-// middleware/auth.js
-
-
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET as CFG_SECRET } from '../config/config.js';
 const JWT_SECRET = CFG_SECRET || process.env.JWT_SECRET;
@@ -63,7 +17,7 @@ export const verifyToken = (req, res, next) => {
     let token = null;
 
     if (authHeader && typeof authHeader === 'string') {
-      // handle "Bearer <token>" or just "<token>"
+        // handle "Bearer <token>" or just "<token>"
       const parts = authHeader.split(' ');
       if (parts.length === 2 && /^Bearer$/i.test(parts[0])) {
         token = parts[1];
@@ -84,7 +38,7 @@ export const verifyToken = (req, res, next) => {
       return unauthorized(res, 'User not authenticated');
     }
 
-    // 2) Verify token
+    
     
     let decoded;
     try {
@@ -102,11 +56,18 @@ export const verifyToken = (req, res, next) => {
       return unauthorized(res, 'Invalid token payload');
     }
     
-    req.user = {
+    // req.user = {
+    //   userId: String(userId),
+    //   id: String(userId),     
+    //   role: role || 'customer', 
+    //   raw: decoded           
+    // };
+        req.user = {
+      _id: String(userId),
       userId: String(userId),
-      id: String(userId),     
-      role: role || 'customer', 
-      raw: decoded           
+      id: String(userId),
+      role: role || 'customer',
+      ...decoded,       // optional: baaki payload bhi chahiye ho to
     };
 
     return next();
@@ -125,5 +86,5 @@ export const authorize = (...allowedRoles) => (req, res, next) => {
   }
   return next();
 };
-
+export const protect = verifyToken;
 export default verifyToken;

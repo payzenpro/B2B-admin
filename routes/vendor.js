@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/orders', verifyToken, async (req, res) => {
   try {
-    console.log('🔹 /api/vendor/orders hit, user =', req.user);
+    console.log(' /api/vendor/orders hit, user =', req.user);
 
     const vendorId = req.user.userId || req.user._id;
 
@@ -21,7 +21,7 @@ router.get('/orders', verifyToken, async (req, res) => {
 
     const orders = await Order.find({ vendorId })
       .populate('customerId', 'name email')         
-      .populate('items.product', 'name price image')
+      // .populate('items.product', 'name price image')
       .sort({ createdAt: -1 });
 
     return res.json({
@@ -29,7 +29,7 @@ router.get('/orders', verifyToken, async (req, res) => {
       data: orders,
     });
   } catch (err) {
-    console.error('❌ Error in /api/vendor/orders:', err);
+    console.error(' Error in /api/vendor/orders:', err);
     return res.status(500).json({
       success: false,
       message: 'Failed to fetch vendor orders',
@@ -79,6 +79,26 @@ router.get("/vendors/:vendorId", verifyToken, async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
+
+
+
+
+router.get('/stores', verifyToken, async (req, res) => {
+  try {
+    // Inline - No separate controller needed
+    const Product = (await import('../models/Product.js')).default;
+    const stores = await Product.find({ vendorId: req.user.userId });
+    
+    res.json({ success: true, data: stores });
+  } catch (error) {
+    console.error('Vendor stores error:', error);
+    res.status(500).json({ success: false, data: [] });
+  }
+});
+
+
+
+
 
 
 export default router;

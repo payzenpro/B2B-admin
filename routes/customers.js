@@ -18,10 +18,9 @@ router.get('/customers', verifyToken, getAllCustomers);
 router.get('/customers/:id', verifyToken, getCustomerById);
 router.post('/customers', verifyToken, createCustomer);
 
-//  Update customer
+
 router.put('/customers/:id', verifyToken, updateCustomer);
 
-// Delete customer
 router.delete('/customers/:id', verifyToken, deleteCustomer);
 
 
