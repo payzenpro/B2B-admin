@@ -1,3 +1,4 @@
+
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -17,54 +18,63 @@ import attributesRoutes from './routes/attributes.js';
 import storeRoutes from './routes/stores.js';
 import pushNotificationRoutes from './routes/pushNotificationRoutes.js';
 import cartRoutes from './routes/cart.js';
- import profileRoutes from './routes/profile.js';
- import shopRoutes from "./routes/shop.js";
-  import reviewRoutes from "./routes/review.js";
-   import chatRoutes from "./routes/chat.js";
-   import uploadRoutes from './routes/uploadRoutes.js';
-    import AddressRoutes from './routes/address.js'; 
-
+import profileRoutes from './routes/profile.js';
+import shopRoutes from "./routes/shop.js";
+import reviewRoutes from "./routes/review.js";
+import chatRoutes from "./routes/chat.js";
+import uploadRoutes from './routes/uploadRoutes.js';
+import AddressRoutes from './routes/address.js'; 
 
 dotenv.config();
 
 const app = express();
-app.use = cors;
+
+app.use(cors()); 
+app.use(express.json());  
+app.use(express.urlencoded({ extended: true })); 
 
 
-const MONGO_URI = 'mongodb://localhost:27017/ecommerce-admin';
+// const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/ecommerce-admin';
+
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://tanu:tanu2784@cluster0.njlvxro.mongodb.net/ecommerce-admin?retryWrites=true&w=majority';
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log(' MongoDB Connected'))
   .catch(err => console.error(' MongoDB Error:', err));
 
+
 app.use('/api/auth', authRoutes);
 app.use('/api/refunds', refundRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/banners', bannerRoutes);
-
 app.use('/api', productRoutes); 
 app.use('/api/customers', customerRoutes); 
 app.use('/api/vendor', vendorRoutes); 
 app.use('/api/categories', categoriesRoutes);
 app.use('/api/attributes', attributesRoutes);
 app.use('/api/stores', storeRoutes);
-
-
 app.use('/api/pushNotifications', pushNotificationRoutes);
 app.use('/api', cartRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', profileRoutes);
 app.use('/api/review', reviewRoutes);
 app.use('/api/chat', chatRoutes);
-
 app.use('/api/vendor', shopRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/address', AddressRoutes);
 
 
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API is working!' });
+});
 
 
-const PORT = 4000;
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ error: err.message });
+});
+
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(` SERVER ON http://localhost:${PORT}`);
 });

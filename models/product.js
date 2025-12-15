@@ -77,12 +77,11 @@ const productSchema = new mongoose.Schema(
       vendorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: false,
     },
 
     seller: {
-      // id: { type: mongoose.Schema.Types.ObjectId, ref: "Vendor" ,default: null},
-      // vendorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+     
       name: String,                                 
       rating: Number,                               
     },

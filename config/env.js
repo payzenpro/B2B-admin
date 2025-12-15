@@ -10,9 +10,7 @@
 export const JWT_SECRET = "MY_SECRET_1234567890"; 
 
 
-// PORT=4000
-// // MONGODB_URI=mongodb://localhost:27017/ecommerce
-//  MONGO_URI=mongodb://127.0.0.1:27017/database
+
  
 
 
